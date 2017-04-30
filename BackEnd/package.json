@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "async-waterfall": "^0.1.5",
+    "clarifai": "^2.1.5",
+    "express": "^4.15.2",
+    "node-base64-image": "^1.0.3",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/shadab37/Space-Apps.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shadab37/Space-Apps/issues"
+  },
+  "homepage": "https://github.com/shadab37/Space-Apps#readme"
+}

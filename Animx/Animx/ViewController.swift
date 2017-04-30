@@ -79,17 +79,56 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate {
     //MARK: Properties
-    @IBOutlet weak var myImageView: UIImageView!
     @IBOutlet weak var uploadButton: UIButton!
-    //@IBOutlet weak var imagePicked: UIImageView!
+    @IBOutlet weak var choosePhotoFromLibrary: UIButton!
+    @IBOutlet weak var takePhotoOfAnimal: UIButton!
+    
     let picker = UIImagePickerController()
+    @IBOutlet weak var myImageView: UIImageView!
+    
+    
+    @IBAction func photoFromLibrary(_ sender: UIBarButtonItem) {
+        picker.allowsEditing = false
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        picker.modalPresentationStyle = .popover
+        present(picker, animated: true, completion: nil)
+        picker.popoverPresentationController?.barButtonItem = sender
+    }
+    
+    @IBAction func shootPhoto(_ sender: UIBarButtonItem) {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            picker.allowsEditing = false
+            picker.sourceType = UIImagePickerControllerSourceType.camera
+            picker.cameraCaptureMode = .photo
+            picker.modalPresentationStyle = .fullScreen
+            present(picker,animated: true,completion: nil)
+        } else {
+            noCamera()
+        }
+    }
+    func noCamera(){
+        let alertVC = UIAlertController(
+            title: "No Camera",
+            message: "Sorry, this device has no camera",
+            preferredStyle: .alert)
+        let okAction = UIAlertAction(
+            title: "OK",
+            style:.default,
+            handler: nil)
+        alertVC.addAction(okAction)
+        present(
+            alertVC,
+            animated: true,
+            completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -97,21 +136,22 @@ UINavigationControllerDelegate {
     
     //MARK: Actions
     @IBAction func openPhotoLibrary(_ sender: Any) {
-
+        
         /*
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary;
-            imagePicker.allowsEditing = false
-            self.present(imagePicker, animated: true, completion: nil)
-        }
-        */
+         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+         let imagePicker = UIImagePickerController()
+         imagePicker.delegate = self
+         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary;
+         imagePicker.allowsEditing = false
+         self.present(imagePicker, animated: true, completion: nil)
+         }
+         */
         
         picker.allowsEditing = false
         picker.sourceType = .photoLibrary
         picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         present(picker, animated: true, completion: nil)
+        //picker.popoverPresentationController?.barButtonItem = sender
         
         
         // This shows how you can specify the settings/parameters instead of using the default/shared parameters
@@ -162,12 +202,12 @@ UINavigationControllerDelegate {
         
     }
     
-   /*
-   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        print("\(#function)")
-    }
-   */
-
+    /*
+     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+     print("\(#function)")
+     }
+     */
+    
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
