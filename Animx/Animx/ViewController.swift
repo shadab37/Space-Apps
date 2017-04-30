@@ -197,7 +197,7 @@ UINavigationControllerDelegate {
         myImageView.image = chosenImage //4
         dismiss(animated:true, completion: nil) //5
         
-        let urlToRequest = "http://localhost:3000/animal"
+        let urlToRequest = "http://localhost:4000/animal"
         //let urlToRequest = "http://68.233.190.37:3000/animal"
         func dataRequest() {
             let url4 = URL(string: urlToRequest)!
@@ -205,8 +205,16 @@ UINavigationControllerDelegate {
             let request = NSMutableURLRequest(url: url4)
             request.httpMethod = "POST"
             request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
-            let paramString = "data=Hello"
-            request.httpBody = paramString.data(using: String.Encoding.utf8)
+            let paramString = "userid=14"
+            let param = ["userid": 14]
+            let imageData = UIImageJPEGRepresentation(myImageView.image!, 1)
+            if(imageData==nil)  { return; }
+            let boundary = generateBoundaryString()
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.httpBody = self.createBodyWithParameters(parameters: [:], filePathKey:"photo", imageDataKey: imageData! as NSData, boundary:boundary) as Data
+            //request.httpBody = paramString.data(using: String.Encoding.utf8)
+            print ("httpBody:")
+            print(request.httpBody)
             let task = session4.dataTask(with: request as URLRequest) { (data, response, error) in
                 guard let _: Data = data, let _: URLResponse = response, error == nil else {
                     print("*****error")
@@ -242,10 +250,6 @@ UINavigationControllerDelegate {
                         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
                         
                         self.present(alertController, animated: true, completion: nil)
-                        
-                        
-                        //let currentTemperatureF = currentConditions["points"] as! Double
-                        //print(currentTemperatureF)
                     } catch let error as NSError {
                         print(error)
                     }
@@ -262,5 +266,40 @@ UINavigationControllerDelegate {
     }
     
     
+    func createBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {
+        let body = NSMutableData();
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+        }
+        
+        let filename = "user-profile.jpg"
+        let mimetype = "image/jpg"
+        
+        body.appendString(string: "--\(boundary)\r\n")
+        body.appendString(string: "Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
+        body.appendString(string: "Content-Type: \(mimetype)\r\n\r\n")
+        body.append(imageDataKey as Data)
+        body.appendString(string: "\r\n")
+        body.appendString(string: "--\(boundary)--\r\n")
+        
+        return body
+    }
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+    
+    
 }
 
+extension NSMutableData {
+    func appendString(string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
+    }
+}

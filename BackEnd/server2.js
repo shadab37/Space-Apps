@@ -24,7 +24,7 @@ app.post('/animal',upload.single('photo'), function(request,response){
   //response.status(200).send(responseString)
   //return
 
-  var userid=request.body.userid;
+  //var userid=request.body.userid;
   var photo=request.file;
 
   var clarifyApp = new Clarifai.App(
@@ -57,8 +57,7 @@ app.post('/animal',upload.single('photo'), function(request,response){
     },
     function(err) {
       console.log ("error")
-      responseString = {"animal": "", "points": 0, "total": 18}      
-      response.status(200).send(responseString)
+      responseString = {"animal": "", "points": 0, "total": 18}
     }
   );
 });
