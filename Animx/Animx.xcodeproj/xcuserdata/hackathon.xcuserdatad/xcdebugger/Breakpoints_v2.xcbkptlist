@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Animx/ViewController.swift"
-            timestampString = "515214517.743194"
+            timestampString = "515219586.19579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "dataRequest()"
             landmarkType = "9">
          </BreakpointContent>
