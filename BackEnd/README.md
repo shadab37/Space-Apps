@@ -1,1 +1,1 @@
-# doodle-inspector-server
+# wildlife-go-server
