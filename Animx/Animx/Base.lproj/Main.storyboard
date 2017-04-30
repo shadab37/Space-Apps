@@ -31,20 +31,16 @@
                                     <action selector="photoFromLibrary:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E79-Qe-D7L"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvY-3T-cco">
-                                <rect key="frame" x="96" y="141" width="183" height="30"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qYN-jB-IoR">
+                                <rect key="frame" x="59" y="140" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Take a picture of an animal"/>
-                                <connections>
-                                    <action selector="shootPhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KiF-Zw-1MV"/>
-                                </connections>
-                            </button>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="choosePhotoFromLibrary" destination="XFH-ab-muD" id="kSS-4f-GkS"/>
-                        <outlet property="takePhotoOfAnimal" destination="dvY-3T-cco" id="EqO-eO-gOP"/>
+                        <outlet property="myImageView" destination="qYN-jB-IoR" id="FmS-F7-qhz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

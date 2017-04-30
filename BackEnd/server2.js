@@ -5,6 +5,7 @@ var app            =        express();
 var Clarifai = require('clarifai');
 var fs = require('fs');
 var _ = require('underscore-node');
+app.set('view engine', 'ejs');
  
 // Load method categories.
 var knownAnimals = ["duck", "dog", "cat", "turtle", "pigeon", "deer", "coyote", "snake", "vulture"]
@@ -18,6 +19,11 @@ function base64_encode(file) {
 }
 
 app.post('/animal',upload.single('photo'), function(request,response){
+  //var responseString = {"animal": "duck", "points": "5", "total": "23"};
+  //console.log (responseString)
+  //response.status(200).send(responseString)
+  //return
+
   var userid=request.body.userid;
   var photo=request.file;
 
@@ -37,17 +43,21 @@ app.post('/animal',upload.single('photo'), function(request,response){
       })
 
       if (animal) {
-        responseString = {"animal": animal.name, "points": 5, "total": 23}
+        responseString = {"animal": animal.name, "points": "5", "total": 23}
       } else {
-        responseString = {"animal": "", "points": 0, "total": 18}
+        responseString = {"animal": "", "points": "0", "total": 18}
       }
 
       console.log (responseString)
-      response.status(200).send(responseString)
+      //response.status(200).send(responseString)
+      response.render('response', {
+          animal: animal.name,
+          points: 5
+        })
     },
     function(err) {
       console.log ("error")
-      responseString = {"animal": "", "points": 0, "total": 18}
+      responseString = {"animal": "", "points": 0, "total": 18}      
       response.status(200).send(responseString)
     }
   );

@@ -96,6 +96,7 @@
 				TargetAttributes = {
 					902AB0BA1EB52E3D0025D89E = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = 9P8427CVT6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -262,9 +263,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9P8427CVT6;
 				INFOPLIST_FILE = Animx/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Hackathon.Animx;
+				PRODUCT_BUNDLE_IDENTIFIER = Hackathon.Animx.1.23;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -274,9 +276,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9P8427CVT6;
 				INFOPLIST_FILE = Animx/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Hackathon.Animx;
+				PRODUCT_BUNDLE_IDENTIFIER = Hackathon.Animx.1.23;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -301,6 +304,7 @@
 				902AB0CF1EB52E3D0025D89E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

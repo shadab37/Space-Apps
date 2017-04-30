@@ -88,40 +88,16 @@ UINavigationControllerDelegate {
     
     
     @IBAction func photoFromLibrary(_ sender: UIBarButtonItem) {
+
         picker.allowsEditing = false
         picker.sourceType = .photoLibrary
         picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         picker.modalPresentationStyle = .popover
         present(picker, animated: true, completion: nil)
         picker.popoverPresentationController?.barButtonItem = sender
+        
     }
     
-    @IBAction func shootPhoto(_ sender: UIBarButtonItem) {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            picker.allowsEditing = false
-            picker.sourceType = UIImagePickerControllerSourceType.camera
-            picker.cameraCaptureMode = .photo
-            picker.modalPresentationStyle = .fullScreen
-            present(picker,animated: true,completion: nil)
-        } else {
-            noCamera()
-        }
-    }
-    func noCamera(){
-        let alertVC = UIAlertController(
-            title: "No Camera",
-            message: "Sorry, this device has no camera",
-            preferredStyle: .alert)
-        let okAction = UIAlertAction(
-            title: "OK",
-            style:.default,
-            handler: nil)
-        alertVC.addAction(okAction)
-        present(
-            alertVC,
-            animated: true,
-            completion: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,7 +112,6 @@ UINavigationControllerDelegate {
     
     //MARK: Actions
     @IBAction func openPhotoLibrary(_ sender: Any) {
-        
         /*
          if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
          let imagePicker = UIImagePickerController()
@@ -147,15 +122,19 @@ UINavigationControllerDelegate {
          }
          */
         
+        /*
         picker.allowsEditing = false
         picker.sourceType = .photoLibrary
         picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         present(picker, animated: true, completion: nil)
+        */
         //picker.popoverPresentationController?.barButtonItem = sender
         
-        
         // This shows how you can specify the settings/parameters instead of using the default/shared parameters
-        let urlToRequest = "http://127.0.0.1/~hackathon/animal"
+        //let urlToRequest = "http://127.0.0.1/~hackathon/animal"
+        let urlToRequest = "http://localhost:3000/animal"
+        //let urlToRequest = "http://68.233.190.37:3000/animal"
+        /*
         func dataRequest() {
             let url4 = URL(string: urlToRequest)!
             let session4 = URLSession.shared
@@ -199,6 +178,7 @@ UINavigationControllerDelegate {
             task.resume()
         }
         dataRequest()
+        */
         
     }
     
@@ -210,10 +190,71 @@ UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        //print ("hi there")
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
+        print (chosenImage)
         myImageView.contentMode = .scaleAspectFit //3
         myImageView.image = chosenImage //4
         dismiss(animated:true, completion: nil) //5
+        
+        let urlToRequest = "http://localhost:3000/animal"
+        //let urlToRequest = "http://68.233.190.37:3000/animal"
+        func dataRequest() {
+            let url4 = URL(string: urlToRequest)!
+            let session4 = URLSession.shared
+            let request = NSMutableURLRequest(url: url4)
+            request.httpMethod = "POST"
+            request.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData
+            let paramString = "data=Hello"
+            request.httpBody = paramString.data(using: String.Encoding.utf8)
+            let task = session4.dataTask(with: request as URLRequest) { (data, response, error) in
+                guard let _: Data = data, let _: URLResponse = response, error == nil else {
+                    print("*****error")
+                    return
+                }
+                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                //print("*****This is the data 4: \(dataString)") //JSONSerialization
+                //print(data)
+                
+                if error != nil {
+                    print(error)
+                } else {
+                    do {
+                        
+                        let parsedData = try JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any]
+                        //print(parsedData)
+                        //print(parsedData["points"])
+                        //let currentConditions = parsedData["animal"] as! [String:Any]
+                        let animal = parsedData["animal"] as! NSString
+                        print(animal)
+                        var parsedPoints = 0;
+                        
+                        if let points = (parsedData["points"] as? NSString)?.integerValue {
+                            parsedPoints = points
+                        } else if let points = (parsedData["points"] as? Int) {
+                            parsedPoints = points
+                        }
+                        
+                        print(parsedPoints)
+                        
+                        let alertController = UIAlertController(title: "Congratulations: You've captured a: ", message:
+                            animal as String, preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                        
+                        
+                        //let currentTemperatureF = currentConditions["points"] as! Double
+                        //print(currentTemperatureF)
+                    } catch let error as NSError {
+                        print(error)
+                    }
+                }
+                
+            }
+            task.resume()
+        }
+        dataRequest()
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
